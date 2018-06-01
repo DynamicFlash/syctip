@@ -9,7 +9,7 @@ var defaultApp = admin.initializeApp({
   storageBucket: "attendance-196708.appspot.com" 
 })
 
-//console.log(defaultApp.name);
+//console.log(admin);
 module.exports = {admin, defaultApp};
 
 

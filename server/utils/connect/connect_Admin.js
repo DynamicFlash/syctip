@@ -8,7 +8,7 @@ var defaultApp = admin.initializeApp({
   databaseURL: "https://attendance-196708.firebaseio.com"
 })
 
-console.log(defaultApp.name);
+//console.log(defaultApp.name);
 module.exports = {admin, defaultApp};
 
 
