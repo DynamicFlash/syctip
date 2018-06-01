@@ -25,6 +25,10 @@ io.on('connection',(socket)=>{
 	
 	socket.emit('newMessage',generateMessage('Admin','welcome to chat app'));
 
+	socket.on('getPiData',(data)=>{
+
+	})
+
 	socket.on('getUid',(uid,callback)=>{
 		var d = new Date(); 
 		var time = 	`${d.getHours()}: `+`${d.getMinutes()} :`+ `${d.getSeconds()}`;
@@ -59,6 +63,7 @@ io.on('connection',(socket)=>{
 		console.log('user disconnected');
 	})	
 })
+
 
 
 server.listen(port,()=>{
