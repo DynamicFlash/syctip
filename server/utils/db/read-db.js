@@ -28,10 +28,10 @@ var getGenres = function() {
   });
 }
 
-// We start an 'async' function to use the 'await' keyword
-async function getData(socket,kuid){
+
+async function getData(socket, kuid){
   var result = await admin.auth().getUser(kuid);
-  console.log(result);
+  //console.log(result);
   socket.emit('users',result)
 }
 

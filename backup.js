@@ -7,7 +7,6 @@ var qdata;
 //console.log(hbs);
 
 //const {login} = require('./utils/auth/firebase-connect')
-const {pushData} = require('./utils/db/snapshot-db');
 const {getData} = require('./utils/db/read-db')
 const {generateMessage, generateLocationMessage} = require('./utils/message')
 const publicPath = path.join(__dirname, '../public')
@@ -34,15 +33,21 @@ io.on('connection',(socket)=>{
 		getData(socket, userId).catch((error)=>{
 			console.log(error)
 		})
+
+		// async function getData(kuid){
+  // 		var result = await admin.auth().getUser(kuid);
+  // 		socket.emit('users',result);
+		// }
+
+		// getData(function(data){qdata=data},uid.uid).catch((error)=>{
+  // 		console.log(error)
+  // });
+
+		// setTimeout(
+		// 	function(){console.log(qdata);
+		// 	socket.emit('users',{uid :`${qdata}`})},1500)
 	})
 
-	socket.on('getM',(data)=>{
-		var info = data.month;
-		console.log(info);
-		pushData(socket,'aldrinFernandes',info).catch((err)=>{
-			console.log(error)
-		});
-	});
 
 	socket.on('createLocationMessage', (coords)=>{
 		//console.log(generateLocationMessage('admin',coords.latitude, coords.longitude))

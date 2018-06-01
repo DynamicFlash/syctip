@@ -6,8 +6,14 @@
 
 
   socket.on('users',(user)=>{
-  	alert(user.uid);
+  	console.log(user.uid);
   })
+
+socket.on('mData',function(data){
+	console.log(data);
+});
+
+socket.emit('getM',{month : 'june'});
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
