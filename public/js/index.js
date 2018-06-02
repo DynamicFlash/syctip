@@ -13,7 +13,7 @@ socket.on('mData',function(data){
 	console.log(data);
 });
 
-socket.emit('getM',{month : 'june'});
+// socket.emit('getM',{month : 'june'});
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
@@ -28,10 +28,10 @@ firebase.auth().onAuthStateChanged(function(user) {
 
       var email_id = user.email;
       // document.getElementById("user_para").innerHTML = "Welcome User : " + email_id;
-      $("#user_para").text(`Welcome User :   ${email_id}`);
-    socket.emit('getUid',{uid : user.uid}, function(res){
-      window.alert(res);
-    })
+    //   $("#user_para").text(`Welcome User :   ${email_id}`);
+    // socket.emit('getUid',{uid : user.uid}, function(res){
+    //   window.alert(res);
+    // })
 
     }
 

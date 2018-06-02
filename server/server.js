@@ -23,10 +23,10 @@ io.on('connection',(socket)=>{
 	var d = new Date(); 
 	var time = 	`${d.getHours()}: `+`${d.getMinutes()} :`+ `${d.getSeconds()}`;
 	
-	socket.emit('newMessage',generateMessage('Admin','welcome to chat app'));
+	//socket.emit('newMessage',generateMessage('Admin','welcome to chat app'));
 
 	socket.on('getPiData',(data)=>{
-
+		console.log(data);
 	})
 
 	socket.on('getUid',(uid,callback)=>{

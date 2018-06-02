@@ -1,121 +1,65 @@
 const {db} = require('./../connect/connect-admin-firestore');
 const {admin} = require('./../connect/connect-admin');
-
-var month = 'september';
-var thresh1 = "11:45:00";
-var thresh2 = "14:45:00";
-var thresh3= "17:00:00";
-
-//this is to set the time on each day
-//var setDoc = db.collection('users').doc('aldrinFernandes').collection('june').doc('3').update(data)
-//make sure to check for new date arrival
-
-//var setDoc = db.collection('users').doc('aldrinFernandes').collection('may').doc('1');
-
-var foxy = new Date()
+const {toDate,getMon} = require('./functions');
 
 
-var data = [
+var writeDb = async function(socket,data){
 
-		{	date : `${foxy.getDate()}`,
-		 	time : "this is a test"
-		 },
+var thresh1 = toDate("11:45:00");
+var thresh2 = toDate("14:45:00");
+var thresh3= toDate("16:59:00");
+var ref,stat;	
+for(var i=1;i<data.length;i++){
 
-		{
-			name : "aldrinFernandes",
-			mtime : "09:14:00"
-		},
-
-		{
-			name : "subodhNaik",
-			mtime : "09:14:00"
-		},
-
-		{
-			name : "shubhamParab",
-			mtime : "09:14:00"
-		},
-
-		{
-			name : "budhajiGawas",
-			mtime : "09:14:00"
-		}
-		]
-
-	
-for(var i=0;i<data.length;i++){
-
-	if(data[i].date==1){
-
-		if(i!=0){
-			var setDoc = db.collection('users').doc(data[i].name).collection(getMon(data[0].date.getMonth())).doc('1').set({mtime :`${data[i].mtime}`});
-		}
-	}
-	else{
-		//console.log(`this is for the ${i} loop`);
-		if(i!=0){
-			if(data[0].time.toTimeString()<thresh.toTimeString()){
-			var setDoc = db.collection('users').doc(data[i].name).collection(getMon(data[0].date.getMonth())).doc(`${data[i].date}`).set({mtime :`${data[i].mtime}`});
+			ref = toDate(data[0].time)
+			if(ref.getTime()<thresh1.getTime()){
+			var setDoc = await db.collection('users').doc(data[i].name).collection(getMon(data[0].month)).doc(`${data[0].date}`).set({mtime :`${data[i].time}`}).catch((err)=>{stat=false});
+			//console.log(" I am from the morning loop ",`${getMon(data[0].month)} : ${data[0].date}: time :${data[i].time}`);
 			}
-			else if(thresh.toTimeString()<data[0].time.toTimeString()<thresh1.toTimeString()){
-			var setDoc = db.collection('users').doc(data[i].name).collection(getMon(data[0].date.getMonth())).doc(`${data[i].date}`).update({atime :`${data[i].atime}`});
+			else if(thresh1.getTime()<ref.getTime() && ref.getTime()<thresh2.getTime()){
+			var setDoc = await db.collection('users').doc(data[i].name).collection(getMon(data[0].month)).doc(`${data[0].date}`).update({atime :`${data[i].time}`}).catch((err)=>{stat=false});
+			//console.log(" I am from the afternoon loop",`${getMon(data[0].month)} : ${data[0].date}: time :${data[i].time}`);
+			}
+			else if(ref.getTime()>thresh3.getTime()){
+			var setDoc = await db.collection('users').doc(data[i].name).collection(getMon(data[0].month)).doc(`${data[0].date}`).update({etime :`${data[i].time}`}).catch((err)=>{stat=false});
+			//console.log(" I am from the evening loop",`${getMon(data[0].month)} : ${data[0].date}: time :${data[i].time}`);
+			}
 		}
-			else if(data[0].time.toTimeString()>thresh13.toTimeString()){
-			var setDoc = db.collection('users').doc(data[i].name).collection(getMon(data[0].date.getMonth())).doc(`${data[i].date}`).update({etime :`${data[i].etime}`});
-		}
-		}
-	}
+
+if(stat == false){
+	Promise.resolve(socket.emit('piStat',{status : "success"}));
+}else{
+	Promise.reject(socket.emit('piStat',{status : "fail"}))
+}
 }
 
-var getMon = function (month){
+module.exports = {writeDb};
 
-	switch(month){
-		case 1:
-		return january;
-		break;
 
-		case 2:
-		return february;
-		break;
+// var data = [
 
-		case 3:
-		return march;
-		break;
+// 		{	date : "1",
+// 			month: "12",
+// 		 	time : "9:10:15"
+// 		 },
 
-		case 4:
-		return april;
-		break;
+// 		{
+// 			name : "aldrinFernandes",
+// 			time : "9:00:00"
+// 		},
 
-		case 5:
-		return may;
-		break;
+// 		{
+// 			name : "subodhNaik",
+// 			time : "8:14:00"
+// 		},
 
-		case 6:
-		return june;
-		break;
+// 		{
+// 			name : "shubhamParab",
+// 			time : "9:08:00"
+// 		},
 
-		case 7:
-		return july;
-		break;
-
-		case 8:
-		return august;
-		break;
-
-		case 9:
-		return september;
-		break;
-
-		case 10:
-		return october;
-		break;
-
-		case 11:
-		return november;
-		break;
-
-		case 12:
-		return december;
-		break;		
-	}
-}
+// 		{
+// 			name : "budhajiGawas",
+// 			time : "9:14:00"
+// 		}
+// 		]
