@@ -36,6 +36,7 @@ async function pushData(socket, name, month){
     });
     //console.log(data)
     Promise.resolve(socket.emit('mData',data));
+    data={};
 }
 
 module.exports = {pushData};

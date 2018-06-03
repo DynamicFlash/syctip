@@ -17,6 +17,12 @@ socket.on('piStat',function(data){
 	console.log(data)
 })
 
+socket.on('piOnline',function(data){
+	if(data){
+		console.log("pi connected");
+	}
+});
+
 // socket.emit('getM',{month : 'june'});
 
 firebase.auth().onAuthStateChanged(function(user) {
@@ -69,7 +75,12 @@ function logout(){
   firebase.auth().signOut();
 }
 
+function month(mon){
+	socket.emit('getM',{month : `${mon}`});
+}
 
   socket.on('disconnect', function(){
     console.log('disconnected from server');
   }); 
+
+

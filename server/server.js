@@ -24,7 +24,10 @@ io.on('connection',(socket)=>{
 	var d = new Date(); 
 	var time = 	`${d.getHours()}: `+`${d.getMinutes()} :`+ `${d.getSeconds()}`;
 	
-	//socket.emit('newMessage',generateMessage('Admin','welcome to chat app'));
+	socket.on('piOnlineStatus',function(data){
+		console.log('pi is connected');
+		socket.emit('piOnline',true);
+	});
 
 	socket.on('getPiData',(data)=>{
 		writeDb(socket,data).catch((err)=>{
@@ -39,7 +42,7 @@ io.on('connection',(socket)=>{
 		console.log('uid :', userId);
 
 		getData(socket, userId).catch((error)=>{
-			console.log(error)
+			console.log(err);
 		})
 	})
 
@@ -47,20 +50,9 @@ io.on('connection',(socket)=>{
 		var info = data.month;
 		console.log(info);
 		pushData(socket,'aldrinFernandes',info).catch((err)=>{
-			console.log(error)
+			console.log(err)
 		});
 	});
-
-	socket.on('createLocationMessage', (coords)=>{
-		//console.log(generateLocationMessage('admin',coords.latitude, coords.longitude))
-		socket.broadcast.emit('newLocationMessage', generateLocationMessage('admin',coords.latitude, coords.longitude))
-	})
-
-
-	socket.on('createEmail',(newEmail)=>{
-		console.log('Create email', newEmail);
-	})
-
 
 	socket.on('disconnect',()=>{
 		console.log('user disconnected');
