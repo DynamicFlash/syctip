@@ -13,6 +13,10 @@ socket.on('mData',function(data){
 	console.log(data);
 });
 
+socket.on('piStat',function(data){
+	console.log(data)
+})
+
 // socket.emit('getM',{month : 'june'});
 
 firebase.auth().onAuthStateChanged(function(user) {

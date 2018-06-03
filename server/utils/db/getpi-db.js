@@ -4,17 +4,17 @@ const {toDate,getMon} = require('./functions');
 
 
 var writeDb = async function(socket,data){
-
+//console.log(data);
 var thresh1 = toDate("11:45:00");
 var thresh2 = toDate("14:45:00");
 var thresh3= toDate("16:59:00");
-var ref,stat;	
+var ref,stat=true;	
 for(var i=1;i<data.length;i++){
 
-			ref = toDate(data[0].time)
+			ref = toDate(data[0].time);
 			if(ref.getTime()<thresh1.getTime()){
 			var setDoc = await db.collection('users').doc(data[i].name).collection(getMon(data[0].month)).doc(`${data[0].date}`).set({mtime :`${data[i].time}`}).catch((err)=>{stat=false});
-			//console.log(" I am from the morning loop ",`${getMon(data[0].month)} : ${data[0].date}: time :${data[i].time}`);
+			console.log(" I am from the morning loop ",`${getMon(data[0].month)} : ${data[0].date}: time :${data[i].time}`);
 			}
 			else if(thresh1.getTime()<ref.getTime() && ref.getTime()<thresh2.getTime()){
 			var setDoc = await db.collection('users').doc(data[i].name).collection(getMon(data[0].month)).doc(`${data[0].date}`).update({atime :`${data[i].time}`}).catch((err)=>{stat=false});
@@ -25,12 +25,7 @@ for(var i=1;i<data.length;i++){
 			//console.log(" I am from the evening loop",`${getMon(data[0].month)} : ${data[0].date}: time :${data[i].time}`);
 			}
 		}
-
-if(stat == false){
-	Promise.resolve(socket.emit('piStat',{status : "success"}));
-}else{
-	Promise.reject(socket.emit('piStat',{status : "fail"}))
-}
+	socket.emit('piStat', stat);
 }
 
 module.exports = {writeDb};

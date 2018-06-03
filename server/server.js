@@ -7,8 +7,9 @@ var qdata;
 //console.log(hbs);
 
 //const {login} = require('./utils/auth/firebase-connect')
+const {writeDb} = require('./utils/db/getpi-db');
 const {pushData} = require('./utils/db/snapshot-db');
-const {getData} = require('./utils/db/read-db')
+const {getData} = require('./utils/db/read-db');
 const {generateMessage, generateLocationMessage} = require('./utils/message')
 const publicPath = path.join(__dirname, '../public')
 const port = process.env.PORT||3000;
@@ -26,7 +27,9 @@ io.on('connection',(socket)=>{
 	//socket.emit('newMessage',generateMessage('Admin','welcome to chat app'));
 
 	socket.on('getPiData',(data)=>{
-		console.log(data);
+		writeDb(socket,data).catch((err)=>{
+			console.log(err)
+		});
 	})
 
 	socket.on('getUid',(uid,callback)=>{
