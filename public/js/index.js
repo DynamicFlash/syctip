@@ -23,6 +23,10 @@ socket.on('piOnline',function(data){
 	}
 });
 
+socket.on('userStatus', function(user){
+	console.log(`${user} is added`);
+});
+
 // socket.emit('getM',{month : 'june'});
 
 firebase.auth().onAuthStateChanged(function(user) {
@@ -57,7 +61,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 function login(){
 
   var userEmail = jQuery('[name=email]').val();
-  var userPass = jQuery('[name=password]').val();;
+  var userPass = jQuery('[name=password]').val();
 
   firebase.auth().signInWithEmailAndPassword(userEmail, userPass).catch(function(error) {
     // Handle Errors here.

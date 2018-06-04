@@ -88,3 +88,52 @@ input, button {
   border: 1px solid #5d8ffc;
   cursor: pointer;
 }
+
+/*** startsfrom here ***/
+
+
+.admin-container{
+    padding-top: 50px;
+}
+
+.admin-container .row-1{
+  
+
+}
+
+.admin-container .row-1 .custom-col{
+    width:20%
+  
+}
+
+@media screen and (max-width:1200px){
+.admin-container .row-1 .custom-col{
+  width:50%;
+}
+
+}
+
+@media screen and (max-width:991px){
+  
+.admin-container .row-1 .custom-col{
+  width:100%;
+}
+
+}
+
+.admin-container .row-1 .custom-col .inner-col{
+    color:yellow;
+    padding:50px;
+    border:2px solid #000;
+}
+
+.admin-container .row-1 .custom-col .inner-col h1{
+  font-size:30px;
+  font-weight:700;
+}
+
+.admin-container .row-1 .custom-col .inner-col p{
+  font-size:18px;
+}
+
+
