@@ -3,10 +3,9 @@ const {admin} = require('./../connect/connect-admin');
 const {db} = require('./../connect/connect-admin-firestore');
 
 
-var updateUser = async function (auid , data , socket){
+var updateUser = async function (data , socket){
 
 	console.log(data);
-	if (auid == 'BMY2y3SZx5PSUsOElzp0SV5tO842' && auid != data.uid){
 	//console.log("i am here")
 	if(data.uf == 'mtime'){
 	db.collection('users').doc(data.uid).collection(data.month).doc(data.date).update({mtime :`${data.time}`}).then((user)=>{
@@ -33,11 +32,7 @@ var updateUser = async function (auid , data , socket){
 	});
 	}
 	
-	}
 
-	else{
-		Promise.reject(socket.emit('serverStatus',{status : `false`}))
-	}
 }
 
 

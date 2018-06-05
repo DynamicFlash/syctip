@@ -20,12 +20,12 @@ const {admin} = require('./../connect/connect-admin');
 
 
 // We start an 'async' function to use the 'await' keyword
-async function pushData(socket, name, month){
+async function pushData(socket, uid, month){
   // var result = await admin.auth().getUser(kuid);
   // console.log(result);
   // socket.emit('users',result)
-
-  var path = db.collection('users').doc(name).collection(month);
+  console.log(`month : ${month}, uid : ${uid}`);
+  var path = db.collection('users').doc(uid).collection(month);
 
   var querySnapshot = await path.get().catch((err)=>{
   	console.log(err)

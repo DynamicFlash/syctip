@@ -34,13 +34,10 @@ var userRecord = await admin.auth().createUser({
 	
 	data ={uid : `${userRecord.uid}`,
 					 name : `${userRecord.displayName}`}
-	console.log(data);
 	Promise.resolve(socket.emit('piReg',data));
 }
 
 var piNewUser = async function(socket ,data){
-	console.log(data)
-	console.log("uid : ",data.uid);
 	var date = new Date();
 	console.log("month : ", getMon(`${date.getMonth()+1}`) ,` date : ${date.getDate()}`,` time : ${date.toLocaleTimeString()}`);
 	

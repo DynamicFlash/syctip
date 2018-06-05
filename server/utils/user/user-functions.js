@@ -1,7 +1,8 @@
-const {firebase} =require('./admin-firebase');
+const {firebase} =require('./../admin/admin-firebase');
 const {admin} = require('./../connect/connect-admin');
 
-var userPass = async function(user, socket, data){
+var userPass = async function(socket, data){
+var user = data.user;
 user.updatePassword(data.password).then(function() {
   socket.emit('serverStatus',{status : `true`});
 }).catch(function(error) {
@@ -9,12 +10,13 @@ user.updatePassword(data.password).then(function() {
 });
 }
 
-var userResetPass = async function(data){
-auth.sendPasswordResetEmail(data.email).then(function() {
+var userResetPass = async function(socket , data){
+firebase.auth().sendPasswordResetEmail(data.email).then(function() {
   socket.emit('serverStatus',{status : `true`});.
 }).catch(function(error) {
   socket.emit('serverStatus',{status : `false`});
 });
 }
+
 
 module.exports ={userPass,userResetPass};

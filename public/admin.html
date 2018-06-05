@@ -1,0 +1,65 @@
+<html>
+<head>
+  <title>admin</title>
+  <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+
+
+  <div id="login_div" class="main-div">
+    <h3 id=ad_min>Admin</h3>
+    <input  type="email" placeholder="Email..." id="email" />
+    <input  type="password" placeholder="Password..." id="password" />
+    <button onclick="login()">Login to Account</button>
+  </div>
+  
+  <div id ="user_div">
+
+  <div id="newUser_div" class="main-div"> 
+    <button onclick="logout()" style="position: absolute; top: 0; left: 0; padding-top:10px;">Logout</button>
+    <h3>Add new User</h3>
+    <input type="email" placeholder="Email..." id="email_field" />
+    <input type="password" placeholder="Password..." id="password_field" />
+    <input type="text" placeholder="Display name" id="name_field"/>
+    <button onclick="create()">Create</button>
+  </div>
+  
+  <div>
+     <h3>delete user</h3>
+    <input type="text" placeholder="Display Name" id="dName" />
+    <button onclick="deleteUser()">delete</button>    
+  </div>
+
+  <div>
+     <h3>update user</h3>
+    <input type="text" placeholder="Display Name" id="uName" />
+    <input type="text" placeholder="month" id="uMonth" />
+    <input type="text" placeholder="date" id="uDate" />
+    <input type="text" placeholder="which time" id="uTime" />
+    <input type="text" placeholder="time" id="nTime" />
+    <button onclick="updateUser()">Update</button>    
+  </div>
+
+
+  </div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/libs/jquery-3.3.1.min.js"></script>
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDO6U1xTMXupPPyPF6fmp91jk42cBc6g_I",
+    authDomain: "attendance-196708.firebaseapp.com",
+    databaseURL: "https://attendance-196708.firebaseio.com",
+    projectId: "attendance-196708",
+    storageBucket: "attendance-196708.appspot.com",
+    messagingSenderId: "276986098297"
+  };
+  firebase.initializeApp(config);
+</script>
+<script src="./js/admin.js"></script>
+
+</body>
+</html>

@@ -4,6 +4,7 @@ let path = require('path');
 let socketIO = require('socket.io');
 const {admin} = require('./utils/connect/connect-admin');
 var qdata;
+var uid = 'BMY2y3SZx5PSUsOElzp0SV5tO842';
 //console.log(hbs);
 
 //const {login} = require('./utils/auth/firebase-connect')
@@ -44,23 +45,55 @@ io.on('connection',(socket)=>{
 		})
 	})
 
+
+	socket.on('adminCheck',(data)=>{
+		console.log(data);
+		console.log(`uid :${data}, admin UId : BMY2y3SZx5PSUsOElzp0SV5tO842 `)
+		if(`${data}` == uid){
+			socket.emit('admin',{status : `true`})
+		}
+		else{
+		socket.emit('admin',{status : `false`})
+		}
+	})
+
 	socket.on('adminNew',(data)=>{
 		console.log(data);
+		if(`${data}` == uid){
 		newUser(socket,data).catch((err)=>{
+			console.log(err);
+			})
+		}else{
+			socket.emit('userStatus',{status : `false`});
+		}
+	})
+
+	socket.on('userPass',(data)=>{
+		userPass(socket,data).catch((err)=>{
 			console.log(err);
 		})
 	})
 
+	socket.on('userResetPass',(data)=>{
+		userResetPass(socket,data).catch((err)=>{
+			console.log(err);
+		})
+	})
 
 	socket.on('adminDelete',(data)=>{
-		deleteUser('BMY2y3SZx5PSUsOElzp0SV5tO842', data.uid, socket).catch((err)=>{
+
+		if(data.auid == uid){
+		deleteUser(data.auid, data.uid, socket).catch((err)=>{
 			console.log(err);
-		});
+			});
+		}else{
+			socket.emit('serverStatus',{status : `false`})
+		}
 	})
 
 	socket.on('adminUpdate',(data)=>{
 		//console.log("this is from socket", data)
-		updateUser('BMY2y3SZx5PSUsOElzp0SV5tO842', data, socket).catch((err)=>{
+		updateUser(data, socket).catch((err)=>{
 			console.log(err);
 		});
 	})
@@ -79,8 +112,9 @@ io.on('connection',(socket)=>{
 
 	socket.on('getM',(data)=>{
 		var info = data.month;
-		console.log(info);
-		pushData(socket,'aldrinFernandes',info).catch((err)=>{
+		var uid = data.uid;
+		console.log(`month : ${info}, uid : ${uid}`);
+		pushData(socket,uid,info).catch((err)=>{
 			console.log(err)
 		});
 	});

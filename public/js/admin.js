@@ -1,5 +1,7 @@
   const socket = io();
-   document.getElementById("login_div").style.display = "block";
+  document.getElementById("login_div").style.display = "block";
+
+  var uid;
 
 var create = function(){
   var userEmail = jQuery('#email_field').val();
@@ -7,7 +9,8 @@ var create = function(){
   var userName = jQuery('#name_field').val();
   socket.emit('adminNew',{email : `${userEmail}`,
 						password : `${userPass}`,
-						name : `${userName}`})
+						name : `${userName}`,
+						uid : `${user.uid}`})
 }
 
 
@@ -21,9 +24,7 @@ socket.on('userStatus',function(data){
 
 
 socket.on('piReg',function(userRecord){
-	//console.log(userRecord);
-	console.log("uid : " ,userRecord.uid);
-	console.log("name : " ,userRecord.name);
+	//
 	socket.emit('piNewUser',{uid : `${userRecord.uid}`,
 								name : `${userRecord.name}`});
 });
@@ -36,3 +37,84 @@ socket.on('serverStatus',function(data){
 	else
 		console.log('something went wrong');
 });
+
+
+var deleteUser = function(){
+
+		var duid = jQuery("#dName").val();
+		var data ={auid : `${uid}`,uid : `${duid}`};
+		socket.emit('adminDelete',data);
+	}
+
+var updateUser = function(){
+	var duid = jQuery("#uName").val();
+	var month = jQuery("#uMonth").val();
+	var date = jQuery("#uDate").val();
+	var uf = jQuery("#uTime").val();
+	var time = jQuery("#nTime").val();
+
+	var data = {uid : `${duid}`,
+				month: `${month}`,
+				date : `${date}`,
+				uf : `${uf}`,
+				time: `${time}`}
+
+	socket.emit('adminUpdate', data);
+
+}
+
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    var user = firebase.auth().currentUser;
+    socket.emit('adminCheck',user.uid);
+    if(user != null){
+    	uid = user.uid;
+    }
+
+  } else {
+    // No user is signed in.
+
+    document.getElementById("user_div").style.display = "none";
+    document.getElementById("login_div").style.display = "block";
+
+  }
+});
+
+function login(){
+
+  
+  var userEmail = jQuery("#email").val();
+  var userPass = jQuery("#password").val();
+  console.log(`email : ${userEmail} password : ${userPass}`);
+
+  firebase.auth().signInWithEmailAndPassword(userEmail,userPass).catch(function(error) {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+
+    window.alert("Error : " + errorMessage);
+  });
+
+}
+
+socket.on('admin' ,function(data){
+	
+	if(data.status == 'true'){
+	console.log(`${data.status}`)
+	document.getElementById("user_div").style.display = "block";
+	document.getElementById("newUser_div").style.display = "block";
+    document.getElementById("login_div").style.display = "none";
+	}
+
+	else{
+		  console.log(`${data.status}`)
+		  logout();
+		 event.preventDefault();
+		 $("#ad_min").text('Only for Admin');
+	}
+})
+
+function logout(){
+  firebase.auth().signOut();
+  uid = null;
+}

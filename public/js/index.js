@@ -1,4 +1,5 @@
   const socket = io();
+  var user;
 
   socket.on('connect', function(){
     console.log('connected to server');
@@ -36,11 +37,12 @@ firebase.auth().onAuthStateChanged(function(user) {
     document.getElementById("user_div").style.display = "block";
     document.getElementById("login_div").style.display = "none";
 
-    var user = firebase.auth().currentUser;
+    user = firebase.auth().currentUser;
 
     if(user != null){
 
-      var email_id = user.email;
+      // email_id = user.email;
+      // uid = user.uid;
       // document.getElementById("user_para").innerHTML = "Welcome User : " + email_id;
     //   $("#user_para").text(`Welcome User :   ${email_id}`);
     // socket.emit('getUid',{uid : user.uid}, function(res){
@@ -77,10 +79,12 @@ function login(){
 
 function logout(){
   firebase.auth().signOut();
+  user = null;
 }
 
 function month(mon){
-	socket.emit('getM',{month : `${mon}`});
+	socket.emit('getM',{uid :`${user.uid}`,
+					month : `${mon}`});
 }
 
   socket.on('disconnect', function(){

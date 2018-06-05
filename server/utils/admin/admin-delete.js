@@ -61,7 +61,7 @@ async function getDelData(db, collectionPath, batchSize){
 
  var deleteUser = async function(auid, uid, socket){
 
- 	if (auid == 'BMY2y3SZx5PSUsOElzp0SV5tO842' && auid != uid){
+ 	if (auid != uid){
  	var month;
  	var batchSize = 10;
 
