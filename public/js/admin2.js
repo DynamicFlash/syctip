@@ -27,4 +27,24 @@ var getDep = function(val){
 
 socket.on('gotFac',function(data){
   console.log(data);
+
+  if(data!=null){
+    document.getElementById("all_div").style.display = "none";
+    document.getElementById("depart_div").style.display = "block";
+
+    for(var i = 0 ;i<data.length;i++){
+    var $input = $(`<input type="button" value="${data[i].name}" />`);
+        $input.appendTo($("#depart_div"));
+    }
+
+  }
 })
+
+
+socket.on('serverStatus',function(data){
+  if(data.status=='true'){
+    console.log('successful');
+  }
+  else
+    console.log('something went wrong');
+});

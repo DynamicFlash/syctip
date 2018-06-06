@@ -9,10 +9,11 @@ var uid = 'Vv4QMQ9H70NM92cZwSgoPn8ys7z1';
 
 //const {login} = require('./utils/auth/firebase-connect')
 const {getFile} = require('./utils/admin/admin-json');
+const {getAllFac} = require('./utils/admin/admin-all')
 const {writeDb} = require('./utils/db/getpi-db');
 const {newUser,piNewUser} = require('./utils/admin/admin-function');
 const {delByName} = require('./utils/admin/admin-delete');
-const {updateUser} = require('./utils/admin/admin-update');
+const {upByName} = require('./utils/admin/admin-update');
 const {pushData} = require('./utils/db/snapshot-db');
 const {getData} = require('./utils/db/read-db');
 const {generateMessage, generateLocationMessage} = require('./utils/message')
@@ -93,11 +94,15 @@ io.on('connection',(socket)=>{
 	})
 
 	socket.on('adminUpdate',(data)=>{
-		//console.log("this is from socket", data)
-		updateUser(data, socket).catch((err)=>{
+		console.log("this is from socket", data)
+		if(data.uid==uid){
+		upByName(data.name,getFile(`${data.depart}`),data.depart,data.month,data.date,data.uf,data.time,socket).catch((err)=>{
 			console.log(err);
-		});
-	})
+			});
+		}else{
+			 socket.emit('serverStatus',{status : 'false'});
+		}
+	});
 
 
 	socket.on('getUid',(uid,callback)=>{
@@ -120,10 +125,24 @@ io.on('connection',(socket)=>{
 		});
 	});
 
+	socket.on('getFac',(data)=>{
+
+	if(data.uid==uid){
+		getAllFac(data.depart, socket)
+	}
+	else{
+		socket.emit('serverStatus',{status : `false`})
+	}
+})
+
+
+
 	socket.on('disconnect',()=>{
 		console.log('user disconnected');
 	})	
 })
+
+
 
 
 

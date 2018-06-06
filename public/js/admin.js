@@ -52,14 +52,15 @@ var deleteUser = function(){
 	}
 
 var updateUser = function(){
-	var duid = jQuery("#uName").val();
+	var name = jQuery("#uName").val();
 	var month = jQuery("#uMonth").val();
 	var date = jQuery("#uDate").val();
 	var uf = jQuery("#uTime").val();
 	var time = jQuery("#nTime").val();
 	var depart = jQuery('#uDepart').val();
 
-	var data = {uid : `${duid}`,
+	var data = {uid : `${uid}`,
+				name: `${name}`,
 				depart: `${depart}`,
 				month: `${month}`,
 				date : `${date}`,

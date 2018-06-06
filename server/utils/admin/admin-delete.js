@@ -75,7 +75,6 @@ async function getDelData(db, collectionPath, batchSize){
  		var coop =await getDelData(db, collectionPath, batchSize).catch((err)=>{
  		socket.emit('serverStatus',{status : `false`})
  		});
-    socket.emit('serverStatus',{status : `true`});
 	}
 
 		var coop = await admin.auth().deleteUser(`${uid}`).catch(function(error) {
@@ -96,9 +95,9 @@ var delByName = async function(auid,name,filename,depart,socket){
       socket.emit('serverStatus',{status : 'false'});
     }
     else
-    { 
+    { var uid
       var json = JSON.parse(data);
-      //console.log(json.users)
+      console.log(json.users)
           for(var i=0;i<json.users.length;i++){
             console.log(`Name: ${json.users[i].name}, uid : ${json.users[i].uid}`);
               if(json.users[i].name==name){
@@ -107,8 +106,8 @@ var delByName = async function(auid,name,filename,depart,socket){
               break;
               }
           }
-          //console.log(uid);
-          //console.log(auid);
+          console.log(uid);
+          console.log(auid);
           deleteUser(auid, uid,depart,socket);
           socket.emit('serverStatus',{status : 'true'});
       }
