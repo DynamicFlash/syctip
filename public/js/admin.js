@@ -45,9 +45,9 @@ socket.on('serverStatus',function(data){
 
 var deleteUser = function(){
 
-		var duid = jQuery("#dName").val();
+		var name = jQuery("#dName").val();
 		var depart =jQuery("#dDepart").val();
-		var data ={auid : `${uid}`,uid : `${duid}`, depart : `${depart}`};
+		var data ={auid : `${uid}`,name : `${name}`, depart : `${depart}`};
 		socket.emit('adminDelete',data);
 	}
 

@@ -3,6 +3,7 @@ const {admin} = require('./../connect/connect-admin');
 const {db} = require('./../connect/connect-admin-firestore');
 const {getFile,facRead,facWrite,facDel} = require('./admin-json')
 const {toDate,getMon} = require('./../db/functions');
+var fs = require('fs');
 
 function deleteCollection(db, collectionPath, batchSize) {
   var collectionRef = db.collection(collectionPath);
@@ -70,24 +71,48 @@ async function getDelData(db, collectionPath, batchSize){
 	{
 		month = getMon(`${i}`);
 		var collectionPath = `${depart}/${uid}/${month}`;
- 		getDelData(db, collectionPath, batchSize).then((err)=>{
-		socket.emit('serverStatus',{status : `true`});
-		}).catch((err)=>{
+    console.log(collectionPath);
+ 		var coop =await getDelData(db, collectionPath, batchSize).catch((err)=>{
  		socket.emit('serverStatus',{status : `false`})
  		});
+    socket.emit('serverStatus',{status : `true`});
 	}
 
-    
-    
-    facDel(getFile(`${depart}`),uid,depart,socket);
-		admin.auth().deleteUser(uid).then((err)=>{
-		socket.emit('serverStatus',{status : `true`});
-		}).catch(function(error) {
+		var coop = await admin.auth().deleteUser(`${uid}`).catch(function(error) {
  		console.log("Error deleting user:", error);
   		});
+    facDel(getFile(`${depart}`),uid,depart,socket);
+    socket.emit('serverStatus',{status : `true`});
  }else{
  	socket.emit('serverStatus',{status : `false`})
  }
 }
 
- module.exports ={deleteUser};
+var delByName = async function(auid,name,filename,depart,socket){
+  
+  fs.readFile(filename ,'utf8' ,(err, data) => {
+    
+    if(err){
+      socket.emit('serverStatus',{status : 'false'});
+    }
+    else
+    { 
+      var json = JSON.parse(data);
+      //console.log(json.users)
+          for(var i=0;i<json.users.length;i++){
+            console.log(`Name: ${json.users[i].name}, uid : ${json.users[i].uid}`);
+              if(json.users[i].name==name){
+                uid=json.users[i].uid
+                console.log(uid);
+              break;
+              }
+          }
+          //console.log(uid);
+          //console.log(auid);
+          deleteUser(auid, uid,depart,socket);
+          socket.emit('serverStatus',{status : 'true'});
+      }
+  });
+}
+
+ module.exports ={delByName};

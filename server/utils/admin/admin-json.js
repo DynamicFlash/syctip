@@ -111,4 +111,4 @@ var getFile = (data)=>{
 
 
 
-module.exports = {facWrite, facRead,getFile,facDel}
+module.exports = {facWrite, facRead,getFile,facDel,getFile}

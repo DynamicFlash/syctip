@@ -8,9 +8,10 @@ var uid = 'Vv4QMQ9H70NM92cZwSgoPn8ys7z1';
 //console.log(hbs);
 
 //const {login} = require('./utils/auth/firebase-connect')
+const {getFile} = require('./utils/admin/admin-json');
 const {writeDb} = require('./utils/db/getpi-db');
 const {newUser,piNewUser} = require('./utils/admin/admin-function');
-const {deleteUser} = require('./utils/admin/admin-delete');
+const {delByName} = require('./utils/admin/admin-delete');
 const {updateUser} = require('./utils/admin/admin-update');
 const {pushData} = require('./utils/db/snapshot-db');
 const {getData} = require('./utils/db/read-db');
@@ -83,7 +84,7 @@ io.on('connection',(socket)=>{
 	socket.on('adminDelete',(data)=>{
 
 		if(data.auid == uid){
-		deleteUser(data.auid, data.uid, data.depart, socket).catch((err)=>{
+		delByName(data.auid, data.name,getFile(`${data.depart}`),data.depart,socket).catch((err)=>{
 			console.log(err);
 			});
 		}else{
