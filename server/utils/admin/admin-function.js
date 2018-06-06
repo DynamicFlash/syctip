@@ -1,5 +1,6 @@
 const {admin} = require('./../connect/connect-admin');
 //const firebase = require('firebase');
+const {getFile,facRead,facWrite,facDel} = require('./admin-json');
 const {db} = require('./../connect/connect-admin-firestore');
 const {toDate,getMon} = require('./../db/functions');
 
@@ -33,50 +34,28 @@ var userRecord = await admin.auth().createUser({
   });
 	
 	data ={uid : `${userRecord.uid}`,
-					 name : `${userRecord.displayName}`}
+					 name : `${userRecord.displayName}`,
+           depart : `${user.depart}`}
+  console.log(data);
 	Promise.resolve(socket.emit('piReg',data));
 }
 
 var piNewUser = async function(socket ,data){
 	var date = new Date();
-	console.log("month : ", getMon(`${date.getMonth()+1}`) ,` date : ${date.getDate()}`,` time : ${date.toLocaleTimeString()}`);
-	
+	console.log("depart :",`${data.depart}`,"month : ", getMon(`${date.getMonth()+1}`) ,` date : ${date.getDate()}`,` time : ${date.toLocaleTimeString()}`);
+	console.log(`file ${getFile(data.depart)}`)
 	if(data != null){
-  		var setDoc = await db.collection('users').doc(data.uid).collection(getMon(`${date.getMonth()+1}`)).doc(`${date.getDate()}`).set({regtime :`${date.toLocaleTimeString()}`}).catch((err)=>{stat=false});
+  		var setDoc = await db.collection(data.depart).doc(data.uid).collection(getMon(`${date.getMonth()+1}`)).doc(`${date.getDate()}`).set({regtime :`${date.toLocaleTimeString()}`}).catch((err)=>{stat=false});
   		//var setDoc = await db.collection('users').doc('testUser').set({name : data }).catch((err)=>{console.log(err)});
   		//var setDoc = await db.collection('users').doc('testUser').collection(getMon(date.getMonth())).catch((err)=>{stat=false});
   		admin.auth().updateUser(data.uid, {disabled: false})
+      var obj = await facWrite(getFile(data.depart),{name: `${data.name}`,uid : `${data.uid}`});
   		Promise.resolve(socket.emit('userStatus',{name :`${data.name}`,status : `true`}));
   		console.log("done")
 	}
 	else
 		Promise.reject(socket.emit('userStatus',{status : `false`}));
 }
-
-// getMon(`${date.getMonth()}`)
-
-
-// admin.auth().createUser({
-//   email: "aldrin.a.fernandes@gmail.com",
-//   emailVerified: false,
-//   phoneNumber: "+11234567890",
-//   password: "secretPassword",
-//   displayName: "John Doe",
-//   photoURL: "http://www.example.com/12345678/photo.png",
-//   disabled: false
-// })
-//   .then(function(userRecord) {
-//     // See the UserRecord reference doc for the contents of userRecord.
-//     console.log("Successfully created new user:", userRecord.displayName);
-//     firebase.auth().sendPasswordResetEmail("aldrin.a.fernandes@gmail.com").then(function() {
-//   console.log("email.send");
-// }).catch(function(error) {
-//   // An error happened.
-// });
-//   })
-//   .catch(function(error) {
-//     console.log("Error creating new user:", error);
-//   });
 
 
 module.exports ={newUser,piNewUser}

@@ -4,7 +4,7 @@ let path = require('path');
 let socketIO = require('socket.io');
 const {admin} = require('./utils/connect/connect-admin');
 var qdata;
-var uid = 'BMY2y3SZx5PSUsOElzp0SV5tO842';
+var uid = 'Vv4QMQ9H70NM92cZwSgoPn8ys7z1';
 //console.log(hbs);
 
 //const {login} = require('./utils/auth/firebase-connect')
@@ -58,8 +58,8 @@ io.on('connection',(socket)=>{
 	})
 
 	socket.on('adminNew',(data)=>{
-		console.log(data);
-		if(`${data}` == uid){
+		
+		if(`${data.uid}` == uid){
 		newUser(socket,data).catch((err)=>{
 			console.log(err);
 			})
@@ -83,7 +83,7 @@ io.on('connection',(socket)=>{
 	socket.on('adminDelete',(data)=>{
 
 		if(data.auid == uid){
-		deleteUser(data.auid, data.uid, socket).catch((err)=>{
+		deleteUser(data.auid, data.uid, data.depart, socket).catch((err)=>{
 			console.log(err);
 			});
 		}else{

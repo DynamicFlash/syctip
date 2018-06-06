@@ -7,10 +7,13 @@ var create = function(){
   var userEmail = jQuery('#email_field').val();
   var userPass = jQuery('#password_field').val();
   var userName = jQuery('#name_field').val();
+  var userDepart = jQuery('#depart_field').val();
+  //console.log(userDepart);
   socket.emit('adminNew',{email : `${userEmail}`,
 						password : `${userPass}`,
 						name : `${userName}`,
-						uid : `${user.uid}`})
+						uid : `${uid}`,
+						depart : `${userDepart}`})
 }
 
 
@@ -26,7 +29,8 @@ socket.on('userStatus',function(data){
 socket.on('piReg',function(userRecord){
 	//
 	socket.emit('piNewUser',{uid : `${userRecord.uid}`,
-								name : `${userRecord.name}`});
+								name : `${userRecord.name}`,
+								depart :`${userRecord.depart}`});
 });
 
 
@@ -42,7 +46,8 @@ socket.on('serverStatus',function(data){
 var deleteUser = function(){
 
 		var duid = jQuery("#dName").val();
-		var data ={auid : `${uid}`,uid : `${duid}`};
+		var depart =jQuery("#dDepart").val();
+		var data ={auid : `${uid}`,uid : `${duid}`, depart : `${depart}`};
 		socket.emit('adminDelete',data);
 	}
 
@@ -52,8 +57,10 @@ var updateUser = function(){
 	var date = jQuery("#uDate").val();
 	var uf = jQuery("#uTime").val();
 	var time = jQuery("#nTime").val();
+	var depart = jQuery('#uDepart').val();
 
 	var data = {uid : `${duid}`,
+				depart: `${depart}`,
 				month: `${month}`,
 				date : `${date}`,
 				uf : `${uf}`,

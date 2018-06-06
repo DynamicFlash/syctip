@@ -1,7 +1,8 @@
 const {firebase} =require('./admin-firebase');
 const {admin} = require('./../connect/connect-admin');
 const {db} = require('./../connect/connect-admin-firestore');
-const {toDate,getMon} = require('./../db/functions')
+const {getFile,facRead,facWrite,facDel} = require('./admin-json')
+const {toDate,getMon} = require('./../db/functions');
 
 function deleteCollection(db, collectionPath, batchSize) {
   var collectionRef = db.collection(collectionPath);
@@ -59,7 +60,7 @@ async function getDelData(db, collectionPath, batchSize){
 }
 
 
- var deleteUser = async function(auid, uid, socket){
+ var deleteUser = async function(auid, uid,depart,socket){
 
  	if (auid != uid){
  	var month;
@@ -68,7 +69,7 @@ async function getDelData(db, collectionPath, batchSize){
  	for(var i = 1;i<=12; i ++)
 	{
 		month = getMon(`${i}`);
-		var collectionPath = `users/${uid}/${month}`;
+		var collectionPath = `${depart}/${uid}/${month}`;
  		getDelData(db, collectionPath, batchSize).then((err)=>{
 		socket.emit('serverStatus',{status : `true`});
 		}).catch((err)=>{
@@ -76,6 +77,9 @@ async function getDelData(db, collectionPath, batchSize){
  		});
 	}
 
+    
+    
+    facDel(getFile(`${depart}`),uid,depart,socket);
 		admin.auth().deleteUser(uid).then((err)=>{
 		socket.emit('serverStatus',{status : `true`});
 		}).catch(function(error) {

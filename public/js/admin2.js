@@ -1,9 +1,12 @@
+const socket = io();
+var uid;
+
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     var user = firebase.auth().currentUser;
 
     if(user != null){
-    	//uid = user.uid;
+    	uid = user.uid;
       $("#checkp").text('object');
     }
 
@@ -12,3 +15,16 @@ firebase.auth().onAuthStateChanged(function(user) {
 console.log("no user signed in")
   }
 });
+
+
+var getDep = function(val){
+
+  socket.emit('getFac',{depart : `${val}`,
+                        uid : `${uid}`
+                      })
+
+}
+
+socket.on('gotFac',function(data){
+  console.log(data);
+})
