@@ -35,6 +35,18 @@ io.on('connection',(socket)=>{
 		socket.emit('piOnline',true);
 	});
 
+	socket.on('piDelete',(data)=>{
+
+		if(data.auid == uid){
+		delByName(data.auid, data.name,getFile(`${data.depart}`),data.depart,socket).catch((err)=>{
+			console.log(err);
+			});
+		}else{
+			socket.emit('serverStatus',{status : `false`})
+		}
+	})
+
+
 	socket.on('getPiData',(data)=>{
 		writeDb(socket,data).catch((err)=>{
 			console.log(err)
@@ -70,6 +82,21 @@ io.on('connection',(socket)=>{
 		}
 	})
 
+	socket.on('adminDelete',(data)=>{
+
+		if(data.auid == uid){
+		// delByName(data.auid, data.name,getFile(`${data.depart}`),data.depart,socket).catch((err)=>{
+		// 	console.log(err);
+		// 	});
+		
+		socket.emit('piRegDel', data);
+
+		}else{
+			socket.emit('serverStatus',{status : `false`})
+		}
+	})
+
+
 	socket.on('userPass',(data)=>{
 		userPass(socket,data).catch((err)=>{
 			console.log(err);
@@ -82,16 +109,6 @@ io.on('connection',(socket)=>{
 		})
 	})
 
-	socket.on('adminDelete',(data)=>{
-
-		if(data.auid == uid){
-		delByName(data.auid, data.name,getFile(`${data.depart}`),data.depart,socket).catch((err)=>{
-			console.log(err);
-			});
-		}else{
-			socket.emit('serverStatus',{status : `false`})
-		}
-	})
 
 	socket.on('adminUpdate',(data)=>{
 		console.log("this is from socket", data)

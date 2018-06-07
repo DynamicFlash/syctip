@@ -33,6 +33,11 @@ socket.on('piReg',function(userRecord){
 								depart :`${userRecord.depart}`});
 });
 
+socket.on('piRegDel',function(userRecord){
+	console.log(userRecord)
+	socket.emit('piDelete',userRecord);
+});
+
 
 socket.on('serverStatus',function(data){
 	if(data.status=='true'){
