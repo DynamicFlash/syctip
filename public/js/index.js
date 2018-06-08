@@ -1,5 +1,5 @@
   const socket = io();
-  var uid;
+  var uid,email_id;
 
   socket.on('connect', function(){
     console.log('connected to server');
@@ -41,8 +41,9 @@ firebase.auth().onAuthStateChanged(function(user) {
 
     if(user != null){
 
-      // email_id = user.email;
-       uid = user.uid;
+        email_id = user.email;
+        uid = user.uid;
+      
       // document.getElementById("user_para").innerHTML = "Welcome User : " + email_id;
     //   $("#user_para").text(`Welcome User :   ${email_id}`);
     // socket.emit('getUid',{uid : user.uid}, function(res){
@@ -85,6 +86,30 @@ function logout(){
 function month(mon){
 	socket.emit('getM',{uid :`${uid}`,
 					month : `${mon}`});
+}
+
+function expand(){
+  document.getElementById("reset_div").style.display = "block";
+}
+
+function change(){
+var pass = jQuery('#new_pass_field').val();
+var rePass = jQuery('#r_pass_field').val();
+if(pass=='yes')
+{
+  socket.emit('userResetPass',email_id);
+  logout();
+}
+}
+
+function expand2(){
+  document.getElementById('resetE_div').style.display = "block";
+  
+}
+
+function change2(){
+var passed = jQuery('#new_pass_email').val();
+socket.emit('userResetPass',passed);
 }
 
   socket.on('disconnect', function(){

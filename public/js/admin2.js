@@ -7,11 +7,14 @@ firebase.auth().onAuthStateChanged(function(user) {
 
     if(user != null){
     	uid = user.uid;
-      //$("#checkp").text('object');
+      $("#checkp").text('');
     }
 
   } else {
-    // No user is signed in.
+  document.getElementById("all_div").style.display = "none";
+  document.getElementById("depart_div").style.display = "none";
+  document.getElementById("fac_div").style.display = "none";
+  $("#checkp").text('Admin Loged out');
 console.log("no user signed in")
   }
 });
@@ -59,6 +62,19 @@ var getData = function(data){
 
 function month(mon){
   socket.emit('adminGetM',{uid :`${uid}`,
-              name : `${fac}`
+              name : `${fac}`,
           month : `${mon}`});
+
+  console.log(`uid :${uid} , name : ${fac} , month ; ${mon}`);
+}
+
+socket.on('mData',function(data){
+  console.log(data);
+});
+
+function logout(){
+  firebase.auth().signOut();
+  uid = null;
+  dataU =null;
+  fac =null;
 }

@@ -11,8 +11,8 @@ user.updatePassword(data.password).then(function() {
 }
 
 var userResetPass = async function(socket , data){
-firebase.auth().sendPasswordResetEmail(data.email).then(function() {
-  socket.emit('serverStatus',{status : `true`});.
+firebase.auth().sendPasswordResetEmail(data).then(function() {
+  socket.emit('serverStatus',{status : `true`});
 }).catch(function(error) {
   socket.emit('serverStatus',{status : `false`});
 });

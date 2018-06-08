@@ -13,8 +13,16 @@
     <input name="email" type="email" placeholder="Email..." id="email_field" />
     <input name="password" type="password" placeholder="Password..." id="password_field" />
     <button onclick="login()">Login to Account</button>
+    <button onclick="expand2()">password reset</button>
     <a href="/admin.html">Admin</a>
   </div>
+
+  <div id = 'resetE_div' style="display : none">
+  <p>Type email</p>
+  <input name="Email" type="email" placeholder="email" id="new_pass_email" />
+  <button onclick="change2()">change</button>
+</div>
+
 
   <div class="main-div" id="signup_div">
     <h3 id="signupname">Admin</h3>
@@ -27,6 +35,12 @@
     
 <div class="logout-container" >
   <button onclick="logout()" style="position: absolute; top: 0; left: 0; padding-top:10px;">Logout</button>
+  <button onclick ="expand()"style="position: absolute; top: 0; right: 0; padding-top:10px;">Change Password</button>
+</div>
+<div id = 'reset_div' style="display : none">
+  <p>Are you sure?type Yes if so</p>
+  <input name="password" type="password" placeholder="Password..." id="new_pass_field" />
+  <button onclick="change()">change</button>
 </div>
 <div class="button-container-1" style="padding-bottom: 30px;">
     <button onclick="month('january')" class="w3-btn w3-black w3-wide" style="display:inline-block;">January</button>

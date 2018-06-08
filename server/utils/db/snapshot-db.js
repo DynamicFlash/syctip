@@ -24,6 +24,50 @@ var fs = require('fs');
 //     data={};
 // }
 
+async function pushAdminData(name,month,socket,db){
+//console.log(db);
+var depart = ['C', 'E','M'];
+for(var j = 0;j<depart.length;j++){
+  console.log(`${getFile(depart[j])} : ${depart[j]}`);
+var trick = await dataByName(name,getFile(depart[j]),depart[j],month,socket,db);
+  }
+}
+
+var dataByName = async function(name,filename,depart,month,socket,db){
+  var d= db
+  console.log(d)
+  fs.readFile(filename ,'utf8' ,(err, data) => {
+    
+    if(err){
+      err
+    }
+    else
+    { 
+      var json = JSON.parse(data);
+      //console.log(json.users)
+          for(var i=0;i<json.users.length;i++){
+            console.log(`Name: ${json.users[i].name}, uid : ${json.users[i].uid}`);
+              if(`${json.users[i].name}`== name){
+                console.log(`depart : ${depart},Name : ${json.users[i].name} UID :  ${json.users[i].uid} month : ${month}`);
+                  //var qwert = sendData(depart,uid,month,d);
+                 db.collection(depart).doc(json.users[i].uid).collection(month).get().then((querySnapshot)=>{
+                    var dataDb={}
+                    querySnapshot.forEach(function(doc) {
+                    dataDb[doc.id]=doc.data() 
+                      })
+                socket.emit('mData',dataDb)
+                  }).catch((err)=>{console.log(err)});
+
+               Promise.resolve(depart);
+              break;
+              }
+          }
+        //   if(d !=null){
+        //   socket.emit('serverStatus',{status : 'true'});
+        // }
+      }
+  });
+}
 
 
 async function pushData(uid,month,socket,db){
@@ -31,7 +75,7 @@ async function pushData(uid,month,socket,db){
 var depart = ['C', 'E','M'];
 for(var j = 0;j<depart.length;j++){
   console.log(`${getFile(depart[j])} : ${depart[j]}`);
-var trick = await dataByName(uid,getFile(depart[j]),depart[j],month,socket,db);
+var trick = await dataByUid(uid,getFile(depart[j]),depart[j],month,socket,db);
   }
 }
 
@@ -58,7 +102,7 @@ async function sendData(depart,uid,month){
 
 
 
-var dataByName = async function(uid,filename,depart,month,socket,db){
+var dataByUid = async function(uid,filename,depart,month,socket,db){
   var d= db
   console.log(d)
   fs.readFile(filename ,'utf8' ,(err, data) => {
@@ -97,4 +141,4 @@ var dataByName = async function(uid,filename,depart,month,socket,db){
 
 
 
-module.exports = {pushData};
+module.exports = {pushData,pushAdminData};

@@ -8,6 +8,7 @@ var uid = 'Vv4QMQ9H70NM92cZwSgoPn8ys7z1';
 //console.log(hbs);
 
 //const {login} = require('./utils/auth/firebase-connect')
+const {userPass,userResetPass}=require('./utils/user/user-functions');
 const {db} = require('./utils/connect/connect-admin-firestore');
 const {getFile} = require('./utils/admin/admin-json');
 const {getAllFac} = require('./utils/admin/admin-all')
@@ -15,7 +16,7 @@ const {writeDb} = require('./utils/db/getpi-db');
 const {newUser,piNewUser} = require('./utils/admin/admin-function');
 const {delByName} = require('./utils/admin/admin-delete');
 const {upByName} = require('./utils/admin/admin-update');
-const {pushData} = require('./utils/db/snapshot-db');
+const {pushData,pushAdminData} = require('./utils/db/snapshot-db');
 const {getData} = require('./utils/db/read-db');
 const {generateMessage, generateLocationMessage} = require('./utils/message')
 const publicPath = path.join(__dirname, '../public')
@@ -99,6 +100,7 @@ io.on('connection',(socket)=>{
 
 
 	socket.on('userPass',(data)=>{
+		console.log(data)
 		userPass(socket,data).catch((err)=>{
 			console.log(err);
 		})
@@ -145,10 +147,10 @@ io.on('connection',(socket)=>{
 	});
 
 	socket.on('adminGetM',(data)=>{
-		//var info = data.month;
+		var info = data.month;
 		if(data.uid == uid){
-		console.log(`month : ${info}, uid : ${uid}`);
-		pushData(uid,info,socket).catch((err)=>{
+		console.log(`month : ${data.month}, name : ${data.name}, month : ${data.month}`);
+		pushAdminData(data.name,data.month,socket,db).catch((err)=>{
 			console.log(err)
 			});
 		}
