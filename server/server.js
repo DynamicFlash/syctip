@@ -8,6 +8,7 @@ var uid = 'Vv4QMQ9H70NM92cZwSgoPn8ys7z1';
 //console.log(hbs);
 
 //const {login} = require('./utils/auth/firebase-connect')
+const {db} = require('./utils/connect/connect-admin-firestore');
 const {getFile} = require('./utils/admin/admin-json');
 const {getAllFac} = require('./utils/admin/admin-all')
 const {writeDb} = require('./utils/db/getpi-db');
@@ -136,11 +137,23 @@ io.on('connection',(socket)=>{
 	socket.on('getM',(data)=>{
 		var info = data.month;
 		var uid = data.uid;
+		console.log(db);
 		console.log(`month : ${info}, uid : ${uid}`);
-		pushData(socket,uid,info).catch((err)=>{
+		pushData(uid,info,socket,db).catch((err)=>{
 			console.log(err)
 		});
 	});
+
+	socket.on('adminGetM',(data)=>{
+		//var info = data.month;
+		if(data.uid == uid){
+		console.log(`month : ${info}, uid : ${uid}`);
+		pushData(uid,info,socket).catch((err)=>{
+			console.log(err)
+			});
+		}
+	});
+
 
 	socket.on('getFac',(data)=>{
 

@@ -1,5 +1,5 @@
 const socket = io();
-var uid;
+var uid,datau,fac;
 
 firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
@@ -7,7 +7,7 @@ firebase.auth().onAuthStateChanged(function(user) {
 
     if(user != null){
     	uid = user.uid;
-      $("#checkp").text('object');
+      //$("#checkp").text('object');
     }
 
   } else {
@@ -31,9 +31,10 @@ socket.on('gotFac',function(data){
   if(data!=null){
     document.getElementById("all_div").style.display = "none";
     document.getElementById("depart_div").style.display = "block";
-
-    for(var i = 0 ;i<data.length;i++){
-    var $input = $(`<input type="button" value="${data[i].name}" />`);
+    datau = data;
+    for(var i = 1 ;i<data.length;i++){
+    var $input = $(`<input type="button" id ="${datau[i].name}" onClick="getData(datau[${i}].name)" value="${data[i].name}" />`);
+        //var data[i].name = `${data[i].name}`
         $input.appendTo($("#depart_div"));
     }
 
@@ -48,3 +49,16 @@ socket.on('serverStatus',function(data){
   else
     console.log('something went wrong');
 });
+
+var getData = function(data){
+  //document.getElementById("all_div").style.display = "none";
+  document.getElementById("depart_div").style.display = "none";
+  document.getElementById("fac_div").style.display = "block";
+  fac = `${data}`;
+}
+
+function month(mon){
+  socket.emit('adminGetM',{uid :`${uid}`,
+              name : `${fac}`
+          month : `${mon}`});
+}
