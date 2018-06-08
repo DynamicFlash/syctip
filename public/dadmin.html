@@ -1,49 +1,39 @@
 <html>
 <head>
-  <title>Login</title>
+  <title>admin</title>
   <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
   <link rel="stylesheet" href="./css/style.css" />
-  <script src="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.js"></script>
-  <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
 </head>
 <body>
 
+
   <div id="login_div" class="main-div">
-    <h3>Login</h3>
-    <input name="email" type="email" placeholder="Email..." id="email_field" />
-    <input name="password" type="password" placeholder="Password..." id="password_field" />
+    <h3 id=ad_min>Department Admin</h3>
+    <input  type="email" placeholder="Email..." id="email" />
+    <input  type="password" placeholder="Password..." id="password" />
     <button onclick="login()">Login to Account</button>
-    <button onclick="expand2()">password reset</button>
-    <a href="/admin.html">Admin</a>
-    <a href="/Dadmin.html">Department Admin</a>
   </div>
+  
+  <div id ="user_div">
+ <button onclick="logout()" style="position: absolute; top: 0; left: 0; padding-top:10px;">Logout</button>
+ <button onClick="getDep()" style="position: absolute; top: 0; right: 0; padding-top:10px;" >Show All faculty </button>
 
-  <div id = 'resetE_div' style="display : none">
-  <p>Type email</p>
-  <input name="Email" type="email" placeholder="email" id="new_pass_email" />
-  <button onclick="change2()">change</button>
-</div>
-
-
-  <div class="main-div" id="signup_div">
-    <h3 id="signupname">Admin</h3>
-    <p id="user_para">Your username will be processed Short</p>
+  <div>
+     <h3>update user</h3>
+    <input type="text" placeholder="Display Name" id="uName" />
+    <input type="text" placeholder="month" id="uMonth" />
+    <input type="text" placeholder="date" id="uDate" />
+    <input type="text" placeholder="which time" id="uTime" />
+    <input type="text" placeholder="time" id="nTime" />
+    <button onclick="updateUser()">Update</button>    
   </div>
-
-  <div id="user_div" class="loggedin-div" style="margin-top:0;position: relative;padding-top:100px;">
-<!--     <h3>Welcome India</h3>
-    <p id="user_para">Welcome to Firebase web login Example. You're currently logged in.</p> -->
+  </div>
+  <div id='all_fac_div' style="display: none">
     
-<div class="logout-container" >
-  <button onclick="logout()" style="position: absolute; top: 0; left: 0; padding-top:10px;">Logout</button>
-  <button onclick ="expand()"style="position: absolute; top: 0; right: 0; padding-top:10px;">Change Password</button>
-</div>
-<div id = 'reset_div' style="display : none">
-  <p>Are you sure?type Yes if so</p>
-  <input name="password" type="password" placeholder="Password..." id="new_pass_field" />
-  <button onclick="change()">change</button>
-</div>
-<div class="button-container-1" style="padding-bottom: 30px;">
+  </div>
+
+  <div id='month_div' style="display: none">
+    <div class="button-container-1" style="padding-bottom: 30px;">
     <button onclick="month('january')" class="w3-btn w3-black w3-wide" style="display:inline-block;">January</button>
     <button onclick="month('february')" class="w3-btn w3-black w3-wide" style="display:inline-block;">February</button>
     <button onclick="month('march')" class="w3-btn w3-black w3-wide" style="display:inline-block;">March</button>
@@ -59,9 +49,7 @@
     <button onclick="month('november')" class="w3-btn w3-black w3-wide" style="display:inline-block;">November</button>
     <button onclick="month('december')" class="w3-btn w3-black w3-wide" style="display:inline-block;">December</button>
 </div>
-
   </div>
-
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/libs/jquery-3.3.1.min.js"></script>
@@ -78,7 +66,7 @@
   };
   firebase.initializeApp(config);
 </script>
-  <script src="./js/index.js"></script>
+<script src="./js/Dadmin.js"></script>
 
 </body>
 </html>

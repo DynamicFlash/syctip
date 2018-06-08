@@ -5,6 +5,10 @@ let socketIO = require('socket.io');
 const {admin} = require('./utils/connect/connect-admin');
 var qdata;
 var uid = 'Vv4QMQ9H70NM92cZwSgoPn8ys7z1';
+var uide = 'cogd9PbgzOd4bWmxbvWc8JC7SGK2';
+var uidc = 'tfUUcmiiUwSr28k9jYaHByX9dWe2';
+var uidm = 'sBn2212RTNdyeetmO0dOG9uSDmq2';
+
 //console.log(hbs);
 
 //const {login} = require('./utils/auth/firebase-connect')
@@ -65,7 +69,7 @@ io.on('connection',(socket)=>{
 	socket.on('adminCheck',(data)=>{
 		console.log(data);
 		console.log(`uid :${data}, admin UId : BMY2y3SZx5PSUsOElzp0SV5tO842 `)
-		if(`${data}` == uid){
+		if(`${data}` == uid || `${data}` == uide ||`${data}` == uidc||`${data}` == uidm){
 			socket.emit('admin',{status : `true`})
 		}
 		else{
@@ -93,7 +97,9 @@ io.on('connection',(socket)=>{
 		
 		socket.emit('piRegDel', data);
 
-		}else{
+		}
+
+		else{
 			socket.emit('serverStatus',{status : `false`})
 		}
 	})
@@ -118,8 +124,26 @@ io.on('connection',(socket)=>{
 		if(data.uid==uid){
 		upByName(data.name,getFile(`${data.depart}`),data.depart,data.month,data.date,data.uf,data.time,socket).catch((err)=>{
 			console.log(err);
-			});
-		}else{
+			})
+		}
+		else if(data.uid==uide){
+		upByName(data.name,getFile('E'),'E',data.month,data.date,data.uf,data.time,socket).catch((err)=>{
+			console.log(err);
+			})
+		}
+		else if(data.uid==uidc){
+		upByName(data.name,getFile('C'),'C',data.month,data.date,data.uf,data.time,socket).catch((err)=>{
+			console.log(err);
+			})
+		}
+		else if(data.uid==uidm){
+		upByName(data.name,getFile('M'),'M',data.month,data.date,data.uf,data.time,socket).catch((err)=>{
+			console.log(err);
+			})
+
+		}
+
+		else{
 			 socket.emit('serverStatus',{status : 'false'});
 		}
 	});
@@ -154,6 +178,27 @@ io.on('connection',(socket)=>{
 			console.log(err)
 			});
 		}
+
+		if(data.uid == uide){
+		console.log(`month : ${data.month}, name : ${data.name}, month : ${data.month}`);
+		pushAdminData(data.name,data.month,socket,db).catch((err)=>{
+			console.log(err)
+			});
+		}
+
+		if(data.uid == uidm){
+		console.log(`month : ${data.month}, name : ${data.name}, month : ${data.month}`);
+		pushAdminData(data.name,data.month,socket,db).catch((err)=>{
+			console.log(err)
+			});
+		}
+
+		if(data.uid == uidc){
+		console.log(`month : ${data.month}, name : ${data.name}, month : ${data.month}`);
+		pushAdminData(data.name,data.month,socket,db).catch((err)=>{
+			console.log(err)
+			});
+		}
 	});
 
 
@@ -161,6 +206,15 @@ io.on('connection',(socket)=>{
 
 	if(data.uid==uid){
 		getAllFac(data.depart, socket)
+	}
+	else if(data.uid==uide){
+		getAllFac('E', socket)
+	}
+	else if(data.uid==uidc){
+		getAllFac('C', socket)
+	}
+	else if(data.uid==uidm){
+		getAllFac('M', socket)
 	}
 	else{
 		socket.emit('serverStatus',{status : `false`})

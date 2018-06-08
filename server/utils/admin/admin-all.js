@@ -4,6 +4,7 @@ const {getFile} = require('./admin-json');
 var getAllFac = async function(depart,socket){
 
 	var filename = getFile(depart);
+	console.log(filename)
 	console.log(filename);
 
 	fs.readFile(filename ,'utf8' ,(err, data) => {
