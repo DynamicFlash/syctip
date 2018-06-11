@@ -4,6 +4,8 @@ let path = require('path');
 let socketIO = require('socket.io');
 const {admin} = require('./utils/connect/connect-admin');
 var qdata;
+var pyio = require('socket.io-client')
+var socketC= pyio.connect('http://localhost:5000', { transports: ['websocket', 'polling'] });
 var uid = 'Vv4QMQ9H70NM92cZwSgoPn8ys7z1';
 var uide = 'cogd9PbgzOd4bWmxbvWc8JC7SGK2';
 var uidc = 'tfUUcmiiUwSr28k9jYaHByX9dWe2';
@@ -36,13 +38,26 @@ io.on('connection',(socket)=>{
 	var d = new Date(); 
 	var time = 	`${d.getHours()}: `+`${d.getMinutes()} :`+ `${d.getSeconds()}`;
 	
-	socket.on('piOnlineStatus',function(data){
-		console.log('pi is connected');
-		socket.emit('piOnline',true);
-	});
+	// socket.on('piOnlineStatus',function(data){
+	// 	console.log('pi is connected');
+	// 	socket.emit('piOnline',true);
+	// });
 
-	socket.on('piDelete',(data)=>{
+socketC.emit('connect',true);
 
+socketC.on('piOnlineStatus',function(data){
+	console.log('pi is connected');
+	socket.emit('piOnline',true);
+});
+
+socketC.on('piOfflineStatus',function(data){
+	console.log('pi is disconnected');
+	// socket.emit('piOnline',true);
+});
+
+	socketC.on('piDelete',(data)=>{
+		data=JSON.parse(data)
+		console.log(data);
 		if(data.auid == uid){
 		delByName(data.auid, data.name,getFile(`${data.depart}`),data.depart,socket).catch((err)=>{
 			console.log(err);
@@ -59,7 +74,7 @@ io.on('connection',(socket)=>{
 		});
 	})
 
-	socket.on('piNewUser',(data)=>{
+	socketC.on('piNewUser',(data)=>{
 		piNewUser(socket,data).catch((err)=>{
 			console.log(err);
 		})
@@ -80,7 +95,7 @@ io.on('connection',(socket)=>{
 	socket.on('adminNew',(data)=>{
 		
 		if(`${data.uid}` == uid){
-		newUser(socket,data).catch((err)=>{
+		newUser(socket,data,socketC).catch((err)=>{
 			console.log(err);
 			})
 		}else{
@@ -94,8 +109,8 @@ io.on('connection',(socket)=>{
 		// delByName(data.auid, data.name,getFile(`${data.depart}`),data.depart,socket).catch((err)=>{
 		// 	console.log(err);
 		// 	});
-		
-		socket.emit('piRegDel', data);
+		console.log(data)
+		socketC.emit('piRegDel',JSON.stringify(data));
 
 		}
 

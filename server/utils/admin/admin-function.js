@@ -21,7 +21,7 @@ const {firebase} =require('./admin-firebase');
 
 
 
-var newUser = async function(socket,user){
+var newUser = async function(socket,user,socketC){
 var userRecord = await admin.auth().createUser({
   email: `${user.email}`,
   emailVerified: false,
@@ -37,11 +37,12 @@ var userRecord = await admin.auth().createUser({
 					 name : `${userRecord.displayName}`,
            depart : `${user.depart}`}
   console.log(data);
-	Promise.resolve(socket.emit('piReg',data));
+	Promise.resolve(socketC.emit('piReg',JSON.stringify(data)));
 }
 
 var piNewUser = async function(socket ,data){
 	var date = new Date();
+  data = JSON.parse(data)
 	console.log("depart :",`${data.depart}`,"month : ", getMon(`${date.getMonth()+1}`) ,` date : ${date.getDate()}`,` time : ${date.toLocaleTimeString()}`);
 	console.log(`file ${getFile(data.depart)}`)
 	if(data != null){

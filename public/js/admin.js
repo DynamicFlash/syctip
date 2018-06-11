@@ -26,17 +26,17 @@ socket.on('userStatus',function(data){
 });
 
 
-socket.on('piReg',function(userRecord){
-	//
-	socket.emit('piNewUser',{uid : `${userRecord.uid}`,
-								name : `${userRecord.name}`,
-								depart :`${userRecord.depart}`});
-});
+// socket.on('piReg',function(userRecord){
+// 	//
+// 	socket.emit('piNewUser',{uid : `${userRecord.uid}`,
+// 								name : `${userRecord.name}`,
+// 								depart :`${userRecord.depart}`});
+// });
 
-socket.on('piRegDel',function(userRecord){
-	console.log(userRecord)
-	socket.emit('piDelete',userRecord);
-});
+// socket.on('piRegDel',function(userRecord){
+// 	console.log(userRecord)
+// 	socket.emit('piDelete',userRecord);
+// });
 
 
 socket.on('serverStatus',function(data){
